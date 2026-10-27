@@ -151,6 +151,7 @@
           </div>
         </div>
         <div id="stageHost"></div>
+        <div class="items-bar" id="itemsBar" aria-label="Furniture in your room"></div>
 
         <div class="controls" id="placementControls">
           <div class="ctl">
@@ -161,14 +162,20 @@
             <label for="rotRange">Rotation <output id="rotOut">0°</output></label>
             <input type="range" id="rotRange" min="-45" max="45" step="1" value="0">
           </div>
+          <div class="ctl">
+            <label for="lightRange">Lighting match <output id="lightOut">100%</output></label>
+            <input type="range" id="lightRange" min="70" max="120" step="1" value="100">
+          </div>
           <div class="btn-row tight">
             <button class="btn btn-ghost btn-sm" id="flipBtn" type="button">Flip</button>
+            <button class="btn btn-ghost btn-sm" id="dupBtn" type="button">Duplicate</button>
             <button class="btn btn-ghost btn-sm" id="resetPlacement" type="button">Reset placement</button>
             <button class="btn btn-ghost btn-sm" id="replaceBtn" type="button">Replace</button>
             <button class="btn btn-ghost btn-sm danger" id="removeBtn" type="button">Remove</button>
+            <button class="btn btn-ghost btn-sm danger" id="clearAllBtn" type="button">Clear all</button>
           </div>
         </div>
-        <p class="muted small" id="placeHint">Drag the furniture to move it. Use the corner handle to resize. With it focused: arrow keys move, + / − resize, [ and ] rotate, Delete removes.</p>
+        <p class="muted small" id="placeHint">Add several pieces: each product you click is added to the room. Click a piece to select it, drag to move, use the corner handle to resize. With a piece focused: arrow keys move, + / − resize, [ and ] rotate, Delete removes.</p>
       </div>
 
       <!-- Fit panel -->
@@ -184,6 +191,7 @@
             <label>Wall width in photo (cm)<input type="number" id="dimW" min="150" max="1500" step="5" inputmode="numeric"></label>
             <label>Room depth (cm)<input type="number" id="dimD" min="150" max="1500" step="5" inputmode="numeric"></label>
             <label>Ceiling height (cm)<input type="number" id="dimH" min="200" max="500" step="5" inputmode="numeric"></label>
+            <label>Depth perspective <output id="perspOut">0.8</output><input type="range" id="dimPersp" min="0" max="2" step="0.1" value="0.8"></label>
             <label id="floorLine">Floor line in photo <output id="floorOut">62%</output><input type="range" id="dimFloor" min="40" max="90" step="1" value="62"></label>
             <div class="btn-row tight"><button class="btn btn-secondary btn-sm" type="submit">Apply</button><button class="btn btn-ghost btn-sm" type="button" id="dimsReset">Restore sample values</button></div>
           </form>
@@ -197,6 +205,7 @@
         <div class="card pad selected-card" id="selectedCard"></div>
         <div class="card pad catalog-card" id="catalogCard">
           <div class="card-head"><h2>Furniture</h2><span class="muted small" id="resultCount"></span></div>
+          <p class="muted small cat-hint" id="catHint">Click a product to add it to the room.</p>
           <div class="filters">
             <label class="search"><span class="sr">Search furniture</span><input type="search" id="searchInput" placeholder="Search name, material, colour" autocomplete="off"></label>
             <label class="sort"><span class="sr">Sort</span>

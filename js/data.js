@@ -11,13 +11,13 @@ window.RV_DATA = (function () {
      floorY  = where the back wall meets the floor, as a fraction of image height. */
   var ROOMS = [
     { id: 'living', name: 'Sunlit living room', type: 'Living room', image: 'assets/rooms/living-room.svg',
-      widthCm: 480, depthCm: 520, ceilingCm: 260, floorY: 0.60, aspect: 1.6 },
+      widthCm: 480, depthCm: 520, ceilingCm: 260, floorY: 0.60, aspect: 1.6, persp: 0.8 },
     { id: 'bedroom', name: 'Calm bedroom', type: 'Bedroom', image: 'assets/rooms/bedroom.svg',
-      widthCm: 400, depthCm: 430, ceilingCm: 250, floorY: 0.62, aspect: 1.6 },
+      widthCm: 400, depthCm: 430, ceilingCm: 250, floorY: 0.62, aspect: 1.6, persp: 0.8 },
     { id: 'dining', name: 'Bright dining room', type: 'Dining room', image: 'assets/rooms/dining-room.svg',
-      widthCm: 440, depthCm: 480, ceilingCm: 255, floorY: 0.61, aspect: 1.6 },
+      widthCm: 440, depthCm: 480, ceilingCm: 255, floorY: 0.61, aspect: 1.6, persp: 0.8 },
     { id: 'compact', name: 'Compact city apartment', type: 'Compact apartment', image: 'assets/rooms/compact-apartment.svg',
-      widthCm: 310, depthCm: 360, ceilingCm: 245, floorY: 0.59, aspect: 1.6 }
+      widthCm: 310, depthCm: 360, ceilingCm: 245, floorY: 0.59, aspect: 1.6, persp: 0.8 }
   ];
 
   /* w/d/h in cm. clearance = recommended free space (cm). sides: which side gaps matter.
@@ -56,7 +56,7 @@ window.RV_DATA = (function () {
     { id: 't1', name: 'Tamsin Oak Coffee Table', category: 'tables', price: 329, w: 110, d: 60, h: 40,
       color: 'Light oak', material: 'Oak veneer, steel legs', image: 'assets/furniture/tamsin-coffee-table.svg',
       description: 'A low rectangular coffee table with a lower shelf for books and throws.',
-      availability: { status: 'in', label: 'In stock – ships in 2 days' }, clearance: 45, sides: null,
+      availability: { status: 'in', label: 'In stock – ships in 2 days' }, clearance: 45, sides: null, anchor: 'front',
       previews: 302, shortlists: 88, fitRate: 96 },
     { id: 't2', name: 'Hearth Dining Table', category: 'tables', price: 749, w: 180, d: 90, h: 75,
       color: 'Dark walnut', material: 'Solid walnut', image: 'assets/furniture/hearth-dining-table.svg',
@@ -66,7 +66,7 @@ window.RV_DATA = (function () {
     { id: 't3', name: 'Pebble Side Table', category: 'tables', price: 119, w: 45, d: 45, h: 50,
       color: 'White marble effect', material: 'Engineered stone, steel base', image: 'assets/furniture/pebble-side-table.svg',
       description: 'A slim round side table, ideal beside a sofa or armchair.',
-      availability: { status: 'in', label: 'In stock – ships in 2 days' }, clearance: 30, sides: null,
+      availability: { status: 'in', label: 'In stock – ships in 2 days' }, clearance: 30, sides: null, anchor: 'side',
       previews: 158, shortlists: 49, fitRate: 99 },
     { id: 'b1', name: 'Halden Queen Bed', category: 'beds', price: 999, w: 168, d: 214, h: 105,
       color: 'Stone grey', material: 'Channelled fabric headboard, steel frame', image: 'assets/furniture/halden-queen-bed.svg',
@@ -103,12 +103,13 @@ window.RV_DATA = (function () {
     { id: 'cabinets', label: 'Cabinets', blurb: 'Sideboards, shelves, wardrobes' }
   ];
 
+  /* Items without a placement are arranged automatically (deterministic) when the design is opened. */
   var SAVED_SEED = [
-    { id: 'seed-1', name: 'Living room with the Fjord sofa', roomId: 'living', productId: 's1',
-      placement: { cx: 0.5, by: 0.7, scale: 1, rot: 0, flip: false },
+    { id: 'seed-1', name: 'Living room: sofa, coffee table and armchair', roomId: 'living',
+      items: [{ pid: 's1' }, { pid: 't1' }, { pid: 'c1' }],
       roomDims: { widthCm: 480, depthCm: 520, ceilingCm: 260 }, savedAt: '2026-10-12T10:20:00Z', sample: true },
-    { id: 'seed-2', name: 'Bedroom idea: Skog bed', roomId: 'bedroom', productId: 'b2',
-      placement: { cx: 0.48, by: 0.78, scale: 1, rot: 0, flip: false },
+    { id: 'seed-2', name: 'Bedroom idea: Skog bed and bookcase', roomId: 'bedroom',
+      items: [{ pid: 'b2' }, { pid: 'k2' }],
       roomDims: { widthCm: 400, depthCm: 430, ceilingCm: 250 }, savedAt: '2026-10-18T16:05:00Z', sample: true }
   ];
 

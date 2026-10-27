@@ -29,8 +29,19 @@ Rebrand: edit `BRAND` in `js/data.js` (name, tagline, currency) and the CSS vari
 - Retailer analytics (previews, shortlists, fit rates, weekly trend) are hardcoded sample numbers. Only "Saved room designs" is live.
 - Availability, prices and checkout: sample data only; there is no checkout.
 
-**Functional calculations** (`computeFit` in `js/app.js`)
-- Scale: the room's *wall width* (cm) is the reference. Furniture is drawn at `real cm × (image width ÷ wall width)`, so changing the room width visibly changes the furniture size.
+**Realism features (still a 2D illustration, not a render)**
+- Depth-aware scale: furniture grows as you drag it towards the camera (`persp` in `js/app.js`; adjustable as "Depth perspective" in room settings).
+- Contact shadow under each piece, fabric/wood texture baked into the SVG sprites, and a per-item "Lighting match" slider to blend with a photo's brightness.
+- Pieces are drawn back-to-front by floor position, so nearer items overlap farther ones.
+- The biggest realism gain comes from uploading a real, straight-on room photo.
+
+**Multiple items**
+- Every product you click is added to the room (up to 8) and auto-arranged without overlapping (coffee tables go in front of the sofa, side tables and chairs go beside it).
+- Click a piece (or its chip under the preview) to select it; drag, resize, rotate, flip, duplicate, replace or remove it. Designs save and reopen with all pieces.
+- Room-level checks: floor overlap between pieces and total floor coverage, on top of the per-item checks.
+
+**Functional calculations** (`evalItem` / `evalRoom` in `js/app.js`)
+- Scale: the room's *wall width* (cm) is the reference. Furniture is drawn at `real cm × (image width ÷ wall width) × depth factor`, so changing the room width visibly changes the furniture size.
 - Depth: the floor line (where wall meets floor) and the room depth map the item's vertical position to a distance from the back wall.
 - Checks: width/depth vs. room, gaps to left/right/back walls, free floor in front vs. the product's recommended clearance, height vs. ceiling, share of wall used, and a warning when the preview is not drawn at 100% size. Rotation uses the rotated bounding-box footprint.
 - Result: "Fits your space" / "Check clearance" / "Doesn't fit here", plus a top-down plan and usage bars.
@@ -45,7 +56,7 @@ Shortlist, saved designs and custom room dimensions use `localStorage`. If stora
 - [x] Open the site; home page loads with no console errors or broken images
 - [x] Select a sample living room (default) or upload a photo (invalid files are rejected with a message)
 - [x] Browse/search/filter/sort furniture
-- [x] Select a sofa or table
+- [x] Add a sofa, coffee table, armchair and side table together
 - [x] Drag to move; resize via handle/slider; rotate; flip; reset; replace; remove
 - [x] See dimensions, fit status, clearance messages and the plan view; edit room dimensions
 - [x] Compare original vs. preview with the draggable slider
