@@ -10,14 +10,14 @@ window.RV_DATA = (function () {
   /* widthCm = width of the back wall visible in the photo (used as the scale reference).
      floorY  = where the back wall meets the floor, as a fraction of image height. */
   var ROOMS = [
-    { id: 'living', name: 'Sunlit living room', type: 'Living room', image: 'assets/rooms/living-room.svg',
-      widthCm: 480, depthCm: 520, ceilingCm: 260, floorY: 0.60, aspect: 1.6, persp: 0.8 },
-    { id: 'bedroom', name: 'Calm bedroom', type: 'Bedroom', image: 'assets/rooms/bedroom.svg',
-      widthCm: 400, depthCm: 430, ceilingCm: 250, floorY: 0.62, aspect: 1.6, persp: 0.8 },
-    { id: 'dining', name: 'Bright dining room', type: 'Dining room', image: 'assets/rooms/dining-room.svg',
-      widthCm: 440, depthCm: 480, ceilingCm: 255, floorY: 0.61, aspect: 1.6, persp: 0.8 },
-    { id: 'compact', name: 'Compact city apartment', type: 'Compact apartment', image: 'assets/rooms/compact-apartment.svg',
-      widthCm: 310, depthCm: 360, ceilingCm: 245, floorY: 0.59, aspect: 1.6, persp: 0.8 }
+    { id: 'living', name: 'Sunlit living room', type: 'Living room', image: 'assets/rooms/living.jpg',
+      widthCm: 540, depthCm: 520, ceilingCm: 260, floorY: 0.80, aspect: 1.61, persp: 0.8 },
+    { id: 'bedroom', name: 'Calm bedroom', type: 'Bedroom', image: 'assets/rooms/bedroom.jpg',
+      widthCm: 480, depthCm: 430, ceilingCm: 250, floorY: 0.80, aspect: 1.61, persp: 0.8 },
+    { id: 'dining', name: 'Bright dining room', type: 'Dining room', image: 'assets/rooms/dining.jpg',
+      widthCm: 500, depthCm: 480, ceilingCm: 255, floorY: 0.80, aspect: 1.61, persp: 0.8 },
+    { id: 'compact', name: 'Compact city apartment', type: 'Compact apartment', image: 'assets/rooms/compact.jpg',
+      widthCm: 400, depthCm: 360, ceilingCm: 245, floorY: 0.79, aspect: 1.61, persp: 0.8 }
   ];
 
   /* w/d/h in cm. clearance = recommended free space (cm). sides: which side gaps matter.
@@ -99,7 +99,7 @@ window.RV_DATA = (function () {
      List the product ids you have photos for in PHOTO_IDS; those products use the photo, the rest keep their SVG illustration.
      Add `credit: 'Photo: Name / Source / Licence'` to a product to display attribution. */
   var PHOTO_DIR = 'assets/furniture/photos/';
-  var PHOTO_IDS = []; // e.g. ['s1', 's2', 't1']
+  var PHOTO_IDS = ['s1', 's2', 's3', 'c1', 'c2', 'c3', 't1', 't2', 't3', 'b1', 'b2', 'k1', 'k2', 'k3']; // e.g. ['s1', 's2', 't1']
 
   var CATEGORIES = [
     { id: 'sofas', label: 'Sofas', blurb: 'Loveseats to modular sofas' },
@@ -113,10 +113,10 @@ window.RV_DATA = (function () {
   var SAVED_SEED = [
     { id: 'seed-1', name: 'Living room: sofa, coffee table and armchair', roomId: 'living',
       items: [{ pid: 's1' }, { pid: 't1' }, { pid: 'c1' }],
-      roomDims: { widthCm: 480, depthCm: 520, ceilingCm: 260 }, savedAt: '2026-10-12T10:20:00Z', sample: true },
+      roomDims: { widthCm: 540, depthCm: 520, ceilingCm: 260 }, savedAt: '2026-10-12T10:20:00Z', sample: true },
     { id: 'seed-2', name: 'Bedroom idea: Skog bed and bookcase', roomId: 'bedroom',
       items: [{ pid: 'b2' }, { pid: 'k2' }],
-      roomDims: { widthCm: 400, depthCm: 430, ceilingCm: 250 }, savedAt: '2026-10-18T16:05:00Z', sample: true }
+      roomDims: { widthCm: 480, depthCm: 430, ceilingCm: 250 }, savedAt: '2026-10-18T16:05:00Z', sample: true }
   ];
 
   var ANALYTICS = {

@@ -15,7 +15,7 @@ index.html            single-page app (hash navigation: #home #visualizer #saved
 css/styles.css        design system (colour tokens at the top)
 js/data.js            sample rooms, 14 products, saved-design seeds, retailer analytics, BRAND
 js/app.js             all behaviour
-assets/rooms/*.svg    4 sample room illustrations
+assets/rooms/*.jpg    4 sample room backgrounds (AI-generated; raw images in assets/rooms/source/, resize with tools/prepare_rooms.py)
 assets/furniture/*.svg 14 transparent furniture cut-outs (front view)
 ```
 
@@ -80,5 +80,7 @@ The bundled furniture images are SVG illustrations (no stock photography could b
 3. Add the ids to `PHOTO_IDS` in `js/data.js`, e.g. `var PHOTO_IDS = ['s1', 't1'];`. Optionally add `credit: 'Photo: Name / Source / Licence'` to the product to show attribution in its details dialog.
 
 A ready-made prompt for letting Claude Code fetch and process photos for you is in `tools/FETCH_PHOTOS_PROMPT.md` (needs a session with internet access).
+
+The bundled photos are AI-generated product images (prompts in `tools/IMAGE_PROMPTS.md`), shown with an "illustrative image" caption. To redo them in bulk, put the raw images in `assets/furniture/source/` named by product id (`s1.png`, `c2.jpg`, ...) and run `python3 tools/cutout_all.py --write`; it cuts out each background (per-image options are in its `PRESETS`), writes `assets/furniture/photos/` and updates `PHOTO_IDS`.
 
 Photos are used everywhere (catalogue, room preview, saved designs, shortlist). Products without a photo keep their illustration. Tips: crop tightly so the photo's proportions match the product's width : height, and avoid angled shots because the preview is a front view.
