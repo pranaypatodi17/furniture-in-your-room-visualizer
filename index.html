@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoomView – Furniture-in-your-room visualizer (demo)</title>
+  <meta name="description" content="Preview furniture in your room and check real-world dimensions and clearances. Static demo.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236b8265'/%3E%3Cpath d='M7 20h18v4H7zM9 13h14v7H9z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a href="#home" class="logo" aria-label="Home">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--green)"/><path d="M7 20h18v4H7zM9 13h14v7H9z" fill="#fff"/></svg>
+      <span data-brand="name">RoomView</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="mainNav" aria-label="Main">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#visualizer" data-nav="visualizer">Visualizer</a>
+      <a href="#saved" data-nav="saved">Saved designs <span class="count" id="savedCount">0</span></a>
+      <a href="#shortlist" data-nav="shortlist">Shortlist <span class="count" id="shortlistCount">0</span></a>
+      <a href="#retailer" data-nav="retailer">Retailer view</a>
+      <a href="#visualizer" class="btn btn-primary btn-sm nav-cta">Start Visualizing</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ============================== HOME ============================== -->
+<section class="page" data-page="home" aria-labelledby="homeTitle">
+  <div class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Scale-aware furniture preview</p>
+        <h1 id="homeTitle">See how furniture fits your space <em>before you buy.</em></h1>
+        <p class="lead">Upload a photo of your room, pick a sofa, table or bed, and see it placed at its real-world size, with dimensions and clearance checks beside it.</p>
+        <div class="btn-row">
+          <a href="#visualizer" class="btn btn-primary btn-lg">Start Visualizing</a>
+          <a href="#how" class="btn btn-ghost btn-lg" data-scroll="how">How it works</a>
+        </div>
+        <ul class="hero-points">
+          <li>Real dimensions in centimetres</li>
+          <li>Clearance &amp; fit warnings</li>
+          <li>Works in your browser, nothing uploaded</li>
+        </ul>
+      </div>
+      <div class="hero-visual" id="heroVisual" aria-label="Sample living room with a sofa placed in it"></div>
+    </div>
+  </div>
+
+  <div class="container section" id="how">
+    <div class="section-head center">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps to a confident decision</h2>
+    </div>
+    <ol class="steps">
+      <li class="card step"><span class="step-n">1</span><h3>Upload your room</h3><p>Use your own photo or start instantly with one of four sample rooms. Enter the wall width so we can estimate scale.</p></li>
+      <li class="card step"><span class="step-n">2</span><h3>Choose your furniture</h3><p>Browse sofas, chairs, tables, beds and cabinets. Every product has exact width, depth and height.</p></li>
+      <li class="card step"><span class="step-n">3</span><h3>Preview &amp; check dimensions</h3><p>Drag, resize and rotate the item, then read the fit and clearance check and compare before and after.</p></li>
+    </ol>
+  </div>
+
+  <div class="band">
+    <div class="container section">
+      <div class="section-head split">
+        <div><p class="eyebrow">Browse by category</p><h2>Featured furniture</h2></div>
+        <a href="#visualizer" class="btn btn-ghost">Open the full catalogue</a>
+      </div>
+      <div class="cat-grid" id="homeCategories"></div>
+    </div>
+  </div>
+
+  <div class="container section">
+    <div class="section-head center">
+      <p class="eyebrow">Before &amp; after</p>
+      <h2>Drag to compare</h2>
+      <p class="muted">A sample living room with and without the Fjord 3-Seater Sofa (224 × 94 × 84 cm).</p>
+    </div>
+    <div class="compare-wrap" id="homeCompare"></div>
+  </div>
+
+  <div class="band band-dark">
+    <div class="container section">
+      <div class="section-head center">
+        <p class="eyebrow">Why scale-aware</p>
+        <h2>Pictures are easy. Fit is what matters.</h2>
+      </div>
+      <div class="benefits">
+        <div class="benefit"><h3>True-to-size overlay</h3><p>Furniture is drawn using its real dimensions against the room width you provide, not just stretched to look nice.</p></div>
+        <div class="benefit"><h3>Clearance checks</h3><p>Gaps to side walls, the back wall and the walkway in front are calculated and flagged when they look too tight.</p></div>
+        <div class="benefit"><h3>Honest estimates</h3><p>A single photo can't give exact measurements. We say so, and let you adjust room dimensions yourself.</p></div>
+        <div class="benefit"><h3>Fewer returns</h3><p>Customers who see size and clearance up front buy with more confidence. See the retailer view for sample metrics.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container section">
+    <div class="cta-card">
+      <div><h2>Ready to try it in your room?</h2><p>No sign-up. Nothing leaves your device.</p></div>
+      <a href="#visualizer" class="btn btn-primary btn-lg">Start Visualizing</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== VISUALIZER ============================== -->
+<section class="page" data-page="visualizer" aria-labelledby="vizTitle" hidden>
+  <div class="container">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Room visualizer</p>
+        <h1 id="vizTitle" class="h1-sm">Place furniture in your room</h1>
+      </div>
+      <p class="notice" role="note"><strong>Simulated preview.</strong> Furniture is overlaid as a flat illustration at an estimated scale. It is not an AI render and is not a precise measurement.</p>
+    </div>
+
+    <div class="viz-grid">
+      <!-- Room selection -->
+      <div class="card pad area-room">
+        <div class="card-head">
+          <h2>1 · Choose a room</h2>
+          <button class="btn btn-ghost btn-sm" id="resetRoom" type="button">Reset room</button>
+        </div>
+        <div class="room-picker" id="roomPicker" role="radiogroup" aria-label="Sample rooms"></div>
+        <div class="upload" id="dropzone">
+          <input type="file" id="roomFile" accept="image/jpeg,image/png,image/webp" hidden>
+          <div class="upload-text">
+            <strong>Or upload your own room photo</strong>
+            <span class="muted">JPG, PNG or WebP, up to 10 MB. The photo stays in your browser.</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="uploadBtn" type="button">Choose photo</button>
+        </div>
+        <p class="form-msg" id="uploadMsg" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- Stage -->
+      <div class="card pad area-stage">
+        <div class="card-head wrap">
+          <h2>2 · Preview</h2>
+          <div class="toolbar">
+            <div class="seg" role="group" aria-label="View mode">
+              <button type="button" id="modePlace" class="seg-btn is-active" aria-pressed="true">Place</button>
+              <button type="button" id="modeCompare" class="seg-btn" aria-pressed="false">Compare</button>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="toggleGuides" type="button" aria-pressed="true">Scale guide</button>
+            <button class="btn btn-primary btn-sm" id="saveDesign" type="button">Save design</button>
+          </div>
+        </div>
+        <div id="stageHost"></div>
+
+        <div class="controls" id="placementControls">
+          <div class="ctl">
+            <label for="sizeRange">Preview size <output id="sizeOut">100%</output></label>
+            <input type="range" id="sizeRange" min="60" max="140" step="1" value="100">
+          </div>
+          <div class="ctl">
+            <label for="rotRange">Rotation <output id="rotOut">0°</output></label>
+            <input type="range" id="rotRange" min="-45" max="45" step="1" value="0">
+          </div>
+          <div class="btn-row tight">
+            <button class="btn btn-ghost btn-sm" id="flipBtn" type="button">Flip</button>
+            <button class="btn btn-ghost btn-sm" id="resetPlacement" type="button">Reset placement</button>
+            <button class="btn btn-ghost btn-sm" id="replaceBtn" type="button">Replace</button>
+            <button class="btn btn-ghost btn-sm danger" id="removeBtn" type="button">Remove</button>
+          </div>
+        </div>
+        <p class="muted small" id="placeHint">Drag the furniture to move it. Use the corner handle to resize. With it focused: arrow keys move, + / − resize, [ and ] rotate, Delete removes.</p>
+      </div>
+
+      <!-- Fit panel -->
+      <div class="card pad area-fit" id="fitCard">
+        <div class="card-head wrap">
+          <h2>3 · Scale &amp; dimension check</h2>
+          <span class="pill" id="fitPill">Select furniture</span>
+        </div>
+        <div id="fitBody"></div>
+        <details class="room-settings" id="roomSettings" open>
+          <summary>Room dimensions (adjust for accuracy)</summary>
+          <form id="dimsForm" class="dims-form" novalidate>
+            <label>Wall width in photo (cm)<input type="number" id="dimW" min="150" max="1500" step="5" inputmode="numeric"></label>
+            <label>Room depth (cm)<input type="number" id="dimD" min="150" max="1500" step="5" inputmode="numeric"></label>
+            <label>Ceiling height (cm)<input type="number" id="dimH" min="200" max="500" step="5" inputmode="numeric"></label>
+            <label id="floorLine">Floor line in photo <output id="floorOut">62%</output><input type="range" id="dimFloor" min="40" max="90" step="1" value="62"></label>
+            <div class="btn-row tight"><button class="btn btn-secondary btn-sm" type="submit">Apply</button><button class="btn btn-ghost btn-sm" type="button" id="dimsReset">Restore sample values</button></div>
+          </form>
+          <p class="form-msg" id="dimsMsg" role="status" aria-live="polite"></p>
+          <p class="muted small"><strong>Estimates only.</strong> Scale is derived from the wall width you enter, assuming the photo spans that wall straight-on. A photo alone can't give exact measurements. For better accuracy, measure a wall (or a known object like a door, 203 cm) and enter it.</p>
+        </details>
+      </div>
+
+      <!-- Catalogue -->
+      <aside class="area-catalog" aria-label="Furniture catalogue">
+        <div class="card pad selected-card" id="selectedCard"></div>
+        <div class="card pad catalog-card" id="catalogCard">
+          <div class="card-head"><h2>Furniture</h2><span class="muted small" id="resultCount"></span></div>
+          <div class="filters">
+            <label class="search"><span class="sr">Search furniture</span><input type="search" id="searchInput" placeholder="Search name, material, colour" autocomplete="off"></label>
+            <label class="sort"><span class="sr">Sort</span>
+              <select id="sortSelect">
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+                <option value="width-asc">Width: narrow first</option>
+                <option value="width-desc">Width: wide first</option>
+                <option value="name">Name A–Z</option>
+              </select>
+            </label>
+          </div>
+          <div class="chips" id="catChips" role="group" aria-label="Category filter"></div>
+          <div class="product-grid" id="productGrid"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== SAVED ============================== -->
+<section class="page" data-page="saved" aria-labelledby="savedTitle" hidden>
+  <div class="container section-sm">
+    <div class="page-head">
+      <div><p class="eyebrow">Saved designs</p><h1 id="savedTitle" class="h1-sm">Your room designs</h1></div>
+      <p class="muted" id="storageNote"></p>
+    </div>
+    <div class="saved-grid" id="savedGrid"></div>
+  </div>
+</section>
+
+<!-- ============================== SHORTLIST ============================== -->
+<section class="page" data-page="shortlist" aria-labelledby="slTitle" hidden>
+  <div class="container section-sm">
+    <div class="page-head">
+      <div><p class="eyebrow">Shortlist</p><h1 id="slTitle" class="h1-sm">Compare your favourites</h1></div>
+      <div class="btn-row tight">
+        <button class="btn btn-ghost btn-sm" id="copyShortlist" type="button">Copy summary</button>
+        <button class="btn btn-ghost btn-sm danger" id="clearShortlist" type="button">Clear shortlist</button>
+      </div>
+    </div>
+    <div id="shortlistBody"></div>
+  </div>
+</section>
+
+<!-- ============================== RETAILER ============================== -->
+<section class="page" data-page="retailer" aria-labelledby="retTitle" hidden>
+  <div class="container section-sm">
+    <div class="page-head">
+      <div><p class="eyebrow">Retailer view</p><h1 id="retTitle" class="h1-sm">What a retailer would see</h1></div>
+      <p class="notice" role="note">All figures except "Saved room designs" are hardcoded sample data for demonstration. No analytics service is connected.</p>
+    </div>
+    <div id="retailerBody"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div><strong data-brand="name">RoomView</strong><p class="muted small">Static demo. Previews are simulated; dimensions and clearance are estimates based on the room sizes you enter.</p></div>
+    <div class="footer-links"><a href="#visualizer">Visualizer</a><a href="#saved">Saved designs</a><a href="#shortlist">Shortlist</a><a href="#retailer">Retailer view</a></div>
+  </div>
+</footer>
+
+<!-- Product details -->
+<dialog id="productDialog" aria-labelledby="pdTitle"><div id="productDialogBody"></div></dialog>
+<!-- Save dialog -->
+<dialog id="saveDialog" aria-labelledby="sdTitle">
+  <form method="dialog" id="saveForm" class="dlg-form">
+    <h2 id="sdTitle">Save this design</h2>
+    <label>Design name<input type="text" id="saveName" maxlength="60" required></label>
+    <p class="form-msg" id="saveMsg" role="alert"></p>
+    <div class="btn-row"><button class="btn btn-primary" type="submit" value="save">Save</button><button class="btn btn-ghost" type="button" id="saveCancel">Cancel</button></div>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
