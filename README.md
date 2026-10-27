@@ -67,3 +67,16 @@ Shortlist, saved designs and custom room dimensions use `localStorage`. If stora
 - [x] Responsive layout and mobile menu
 
 Keyboard: with the furniture focused, arrows move, `+`/`-` resize, `[`/`]` rotate, Delete removes.
+
+## Using real product photos
+
+The bundled furniture images are SVG illustrations (no stock photography could be bundled offline). To use real photos:
+
+1. Get a **front-on** product photo for each item (ideally on white) from a source you have the right to use: your own catalogue, a manufacturer/retailer feed, or free-licence sites such as Unsplash, Pexels or Wikimedia Commons (keep the credit).
+2. Make a transparent, tightly cropped PNG named after the product id and save it in `assets/furniture/photos/`:
+   `s1` Fjord sofa, `s2` Nordhavn loveseat, `s3` Larkspur sofa, `c1` Mira armchair, `c2` Ola dining chair, `c3` Sven wing chair, `t1` Tamsin coffee table, `t2` Hearth dining table, `t3` Pebble side table, `b1` Halden bed, `b2` Skog bed, `k1` Rowan sideboard, `k2` Vesper bookcase, `k3` Atlas wardrobe.
+   - White background: `python3 tools/make_cutout.py my-photo.jpg assets/furniture/photos/s1.png` (needs `pip install pillow numpy`; only this helper uses them).
+   - Busy background: use any background remover (remove.bg, Canva, Photoshop) and save the PNG directly.
+3. Add the ids to `PHOTO_IDS` in `js/data.js`, e.g. `var PHOTO_IDS = ['s1', 't1'];`. Optionally add `credit: 'Photo: Name / Source / Licence'` to the product to show attribution in its details dialog.
+
+Photos are used everywhere (catalogue, room preview, saved designs, shortlist). Products without a photo keep their illustration. Tips: crop tightly so the photo's proportions match the product's width : height, and avoid angled shots because the preview is a front view.

@@ -95,6 +95,12 @@ window.RV_DATA = (function () {
       previews: 197, shortlists: 52, fitRate: 82 }
   ];
 
+  /* Optional real photos: put a transparent PNG at assets/furniture/photos/<product id>.png (e.g. s1.png).
+     List the product ids you have photos for in PHOTO_IDS; those products use the photo, the rest keep their SVG illustration.
+     Add `credit: 'Photo: Name / Source / Licence'` to a product to display attribution. */
+  var PHOTO_DIR = 'assets/furniture/photos/';
+  var PHOTO_IDS = []; // e.g. ['s1', 's2', 't1']
+
   var CATEGORIES = [
     { id: 'sofas', label: 'Sofas', blurb: 'Loveseats to modular sofas' },
     { id: 'chairs', label: 'Chairs', blurb: 'Lounge, dining and accent' },
@@ -123,5 +129,5 @@ window.RV_DATA = (function () {
     returnRateAfterFitWarning: 12
   };
 
-  return { brand: BRAND, rooms: ROOMS, products: PRODUCTS, categories: CATEGORIES, savedSeed: SAVED_SEED, analytics: ANALYTICS };
+  return { brand: BRAND, photoDir: PHOTO_DIR, photoIds: PHOTO_IDS, rooms: ROOMS, products: PRODUCTS, categories: CATEGORIES, savedSeed: SAVED_SEED, analytics: ANALYTICS };
 })();

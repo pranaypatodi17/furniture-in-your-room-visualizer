@@ -55,6 +55,21 @@
     return { id: 'upload', name: 'Your photo', src: u.src, aspect: u.aspect, uploaded: true, sample: null,
       widthCm: o.widthCm || 400, depthCm: o.depthCm || 450, ceilingCm: o.ceilingCm || 250, floorY: o.floorY || 0.62, persp: o.persp != null ? o.persp : 1 };
   }
+  /* Use a real photo (assets/furniture/photos/<id>.png) when present, else the SVG illustration. */
+  var src = function (p) { return p.img || p.image; };
+  function detectPhotos() {
+    D.products.forEach(function (p) {
+      if (D.photoIds.indexOf(p.id) < 0) return;
+      var im = new Image(), url = D.photoDir + p.id + '.png';
+      im.onload = function () { if (im.naturalWidth > 10) { p.img = url; p.photoAspect = im.naturalWidth / im.naturalHeight; refreshImages(); } };
+      im.src = url;
+    });
+  }
+  var refreshTimer = 0;
+  function refreshImages() {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(function () { homeBuilt = false; renderHome(); if (state.room && !$('[data-page="visualizer"]').hidden) renderAll(); if (!$('[data-page="saved"]').hidden) renderSaved(); if (!$('[data-page="shortlist"]').hidden) renderShortlist(); }, 60);
+  }
   var prodOf = function (it) { return byId(D.products, it.pid); };
   function selItem() { for (var i = 0; i < state.items.length; i++) if (state.items[i].uid === state.sel) return state.items[i]; return null; }
   function itemByUid(u) { for (var i = 0; i < state.items.length; i++) if (state.items[i].uid === +u) return state.items[i]; return null; }
@@ -193,7 +208,7 @@
   }
   function placedHTML(room, v, opts) {
     var inter = opts.interactive, p = v.p, pl = v.pl, sel = inter && v.uid === opts.sel;
-    var inner = '<span class="cshadow"></span><img src="' + esc(p.image) + '" alt="" draggable="false"' + (pl.flip ? ' style="transform:scaleX(-1)"' : '') + '>';
+    var inner = '<span class="cshadow"></span><img src="' + esc(src(p)) + '" alt="" draggable="false"' + (pl.flip ? ' style="transform:scaleX(-1)"' : '') + '>';
     if (inter) inner += '<span class="dim-tag">' + p.w + ' cm</span><span class="dim-tag-h">' + p.h + ' cm</span><span class="handle" data-handle="1" title="Drag to resize"></span>';
     return '<div class="placed' + (inter ? ' is-interactive' : '') + (sel ? ' is-selected' : '') + '" ' + (inter ? 'data-uid="' + v.uid + '" tabindex="0" role="img" aria-label="' + esc(p.name) + ', drag to move" ' : '') +
       'style="' + placedStyle(room, p, pl) + '">' + inner + '</div>';
@@ -233,7 +248,7 @@
       '<span class="sim-badge">Simulated preview</span>';
     $('#homeCategories').innerHTML = D.categories.map(function (c) {
       var list = D.products.filter(function (p) { return p.category === c.id; }), rep = list[0];
-      return '<button class="cat-card" type="button" data-cat="' + c.id + '"><span class="cat-img"><img src="' + rep.image + '" alt=""></span><span class="cat-name">' + c.label + '</span><span class="muted small">' + c.blurb + ' · ' + list.length + ' items</span></button>';
+      return '<button class="cat-card" type="button" data-cat="' + c.id + '"><span class="cat-img"><img src="' + src(rep) + '" alt=""></span><span class="cat-name">' + c.label + '</span><span class="muted small">' + c.blurb + ' · ' + list.length + ' items</span></button>';
     }).join('');
     $$('#homeCategories .cat-card').forEach(function (b) { b.addEventListener('click', function () { state.cat = b.dataset.cat; goto('visualizer'); }); });
     initCompare($('#homeCompare'), living, vs, { pos: 50 });
@@ -512,7 +527,7 @@
     var it = selItem(), el = $('#selectedCard');
     if (!it) { el.innerHTML = '<h2>Selected product</h2><p class="muted">Nothing selected. Click a product below to add it to your room, then click any piece in the room to select it.</p>'; return; }
     var p = prodOf(it), inSL = inShortlist(p.id);
-    el.innerHTML = '<div class="sel-top"><img src="' + p.image + '" alt="' + esc(p.name) + '"><div><p class="eyebrow">' + esc(catLabel(p.category)) + '</p><h2>' + esc(p.name) + '</h2><p class="price">' + money(p.price) + '</p></div></div>' +
+    el.innerHTML = '<div class="sel-top"><img src="' + src(p) + '" alt="' + esc(p.name) + '"><div><p class="eyebrow">' + esc(catLabel(p.category)) + '</p><h2>' + esc(p.name) + '</h2><p class="price">' + money(p.price) + '</p></div></div>' +
       '<dl class="spec"><div><dt>W × D × H</dt><dd>' + dimsText(p) + '</dd></div><div><dt>Colour</dt><dd>' + esc(p.color) + '</dd></div><div><dt>Material</dt><dd>' + esc(p.material) + '</dd></div></dl>' +
       '<div class="btn-row tight"><button class="btn btn-secondary btn-sm" id="selShort" type="button">' + (inSL ? 'Remove from shortlist' : 'Add to shortlist') + '</button><button class="btn btn-ghost btn-sm" id="selDetails" type="button">View product details</button></div>';
     $('#selShort').addEventListener('click', function () { toggleShortlist(p.id); });
@@ -554,7 +569,7 @@
     grid.innerHTML = list.map(function (p) {
       var n = counts[p.id] || 0, sel = cur && cur.pid === p.id;
       return '<article class="product' + (sel ? ' is-selected' : '') + '"><button type="button" class="product-main" data-id="' + p.id + '" aria-label="' + (state.replacing ? 'Replace selected piece with ' : 'Add ') + esc(p.name) + ' to the room">' +
-        (n ? '<span class="in-room">' + n + ' in room</span>' : '') + '<span class="product-img"><img src="' + p.image + '" alt="' + esc(p.name) + '" loading="lazy"></span>' +
+        (n ? '<span class="in-room">' + n + ' in room</span>' : '') + '<span class="product-img"><img src="' + src(p) + '" alt="' + esc(p.name) + '" loading="lazy"></span>' +
         '<span class="product-name">' + esc(p.name) + '</span><span class="product-meta">' + dimsText(p) + '</span><span class="product-price">' + money(p.price) + '</span></button>' +
         '<div class="product-actions"><button type="button" class="link-btn" data-details="' + p.id + '">Details</button><button type="button" class="link-btn" data-short="' + p.id + '">' + (inShortlist(p.id) ? '★ Shortlisted' : '☆ Shortlist') + '</button></div></article>';
     }).join('');
@@ -567,7 +582,7 @@
   function dimDiagram(p) {
     var W = 300, H = 200, pad = 34, sc = Math.min((W - 2 * pad) / p.w, (H - 2 * pad) / p.h), w = p.w * sc, h = p.h * sc, x = (W - w) / 2, y = (H - h) / 2 + 4;
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="dim-diagram" role="img" aria-label="Front view with width ' + p.w + ' cm and height ' + p.h + ' cm">' +
-      '<image href="' + p.image + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" preserveAspectRatio="none"/>' +
+      '<image href="' + src(p) + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" preserveAspectRatio="none"/>' +
       '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" fill="none" stroke="var(--wood)" stroke-dasharray="4 3"/>' +
       '<line x1="' + x + '" x2="' + (x + w) + '" y1="' + (y - 12) + '" y2="' + (y - 12) + '" stroke="var(--charcoal)"/><text x="' + (W / 2) + '" y="' + (y - 17) + '" text-anchor="middle" class="plan-t strong">' + p.w + ' cm</text>' +
       '<line x1="' + (x - 12) + '" x2="' + (x - 12) + '" y1="' + y + '" y2="' + (y + h) + '" stroke="var(--charcoal)"/><text x="' + (x - 18) + '" y="' + (y + h / 2) + '" text-anchor="middle" class="plan-t strong" transform="rotate(-90 ' + (x - 18) + ' ' + (y + h / 2) + ')">' + p.h + ' cm</text></svg>';
@@ -608,7 +623,7 @@
     }
     var r = state.room || roomFromSample(DEFAULT_ROOM), total = items.reduce(function (s, p) { return s + p.price; }, 0);
     var cards = items.map(function (p) {
-      return '<article class="card sl-card"><img src="' + p.image + '" alt="' + esc(p.name) + '"><h3>' + esc(p.name) + '</h3><p class="price">' + money(p.price) + '</p><p class="muted small">' + dimsText(p) + '</p>' +
+      return '<article class="card sl-card"><img src="' + src(p) + '" alt="' + esc(p.name) + '"><h3>' + esc(p.name) + '</h3><p class="price">' + money(p.price) + '</p><p class="muted small">' + dimsText(p) + '</p>' +
         '<div class="btn-row tight"><button class="btn btn-primary btn-sm" data-prev="' + p.id + '" type="button">Add to room</button><button class="btn btn-ghost btn-sm danger" data-rm="' + p.id + '" type="button">Remove</button></div></article>';
     }).join('');
     var rows = [['Category', function (p) { return catLabel(p.category); }], ['Price', function (p) { return money(p.price); }], ['Width', function (p) { return p.w + ' cm'; }], ['Depth', function (p) { return p.d + ' cm'; }], ['Height', function (p) { return p.h + ' cm'; }],
@@ -650,8 +665,8 @@
     var base = byId(D.rooms, d.roomId), dm = d.roomDims || {};
     if (base) return { id: base.id, name: base.name, src: base.image, aspect: base.aspect, uploaded: false, sample: base,
       widthCm: dm.widthCm || base.widthCm, depthCm: dm.depthCm || base.depthCm, ceilingCm: dm.ceilingCm || base.ceilingCm, floorY: base.floorY, persp: dm.persp != null ? dm.persp : base.persp };
-    var src = d.image || memImages[d.id]; if (!src) return null;
-    return { id: 'upload', name: 'Your photo', src: src, aspect: d.aspect || 1.5, uploaded: true, sample: null,
+    var photo = d.image || memImages[d.id]; if (!photo) return null;
+    return { id: 'upload', name: 'Your photo', src: photo, aspect: d.aspect || 1.5, uploaded: true, sample: null,
       widthCm: dm.widthCm, depthCm: dm.depthCm, ceilingCm: dm.ceilingCm, floorY: dm.floorY || 0.62, persp: dm.persp != null ? dm.persp : 1 };
   }
   var designItems = function (d) { return d.items || (d.productId ? [{ pid: d.productId, pl: d.placement }] : []); }; // supports older single-item designs
@@ -816,7 +831,7 @@
   function init() {
     $$('[data-brand]').forEach(function (el) { el.textContent = D.brand[el.dataset.brand]; });
     document.title = D.brand.name + ' – Furniture-in-your-room visualizer (demo)';
-    updateCounts(); bind(); route();
+    updateCounts(); bind(); route(); detectPhotos();
   }
   init();
 })();
