@@ -79,4 +79,6 @@ The bundled furniture images are SVG illustrations (no stock photography could b
    - Busy background: use any background remover (remove.bg, Canva, Photoshop) and save the PNG directly.
 3. Add the ids to `PHOTO_IDS` in `js/data.js`, e.g. `var PHOTO_IDS = ['s1', 't1'];`. Optionally add `credit: 'Photo: Name / Source / Licence'` to the product to show attribution in its details dialog.
 
+A ready-made prompt for letting Claude Code fetch and process photos for you is in `tools/FETCH_PHOTOS_PROMPT.md` (needs a session with internet access).
+
 Photos are used everywhere (catalogue, room preview, saved designs, shortlist). Products without a photo keep their illustration. Tips: crop tightly so the photo's proportions match the product's width : height, and avoid angled shots because the preview is a front view.
